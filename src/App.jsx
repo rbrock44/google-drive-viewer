@@ -43,37 +43,34 @@ function App() {
     }
 
     return (
-        <>
-            (
-            <div className="p-6">
-                {!isAuthorized ? (
+        <div className="p-6">
+            {!isAuthorized ? (
+                <button
+                    onClick={authorize}
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                    Authorize Google Drive Access
+                </button>
+            ) : (
+                <div>
                     <button
-                        onClick={authorize}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={listFiles}
+                        className="bg-green-500 text-white px-4 py-2 rounded mb-4"
                     >
-                        Authorize Google Drive Access
+                        Load Drive Files
                     </button>
-                ) : (
-                    <div>
-                        <button
-                            onClick={listFiles}
-                            className="bg-green-500 text-white px-4 py-2 rounded mb-4"
-                        >
-                            Load Drive Files
-                        </button>
 
-                        <div className="grid gap-2">
-                            {files.map(file => (
-                                <div key={file.id} className="p-3 border rounded">
-                                    <h3 className="font-semibold">{file.name}</h3>
-                                    <p className="text-sm text-gray-600">{file.mimeType}</p>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="grid gap-2">
+                        {files.map(file => (
+                            <div key={file.id} className="p-3 border rounded">
+                                <h3 className="font-semibold">{file.name}</h3>
+                                <p className="text-sm text-gray-600">{file.mimeType}</p>
+                            </div>
+                        ))}
                     </div>
-                )}
-            </div>
-        </>
+                </div>
+            )}
+        </div>
     )
 }
 
