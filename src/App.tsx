@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
 import { loadGoogleDriveFiles } from './utils/utils.js';
-import React from 'react';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
