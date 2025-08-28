@@ -1,10 +1,9 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
-import {DISCOVERY_DOC, SCOPES} from './constants.tsx'
+import { DISCOVERY_DOC, SCOPES } from './constants.tsx'
 
-const apiKey = process.env.GOOGLE_API_KEY;
-const clientId = process.env.GOOGLE_CLIENT_ID;
-
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 function App() {
     const [isAuthorized, setIsAuthorized] = useState(false);
@@ -15,8 +14,11 @@ function App() {
     }, []);
 
     async function initializeGapi() {
-        console.log('clientId: ', clientId, apiKey )
+
+        console.log('clientId: ', clientId, apiKey)
         await window.gapi.load('client', async () => {
+            console.log('clinet loaded -> clientId: ', clientId, apiKey)
+
             await window.gapi.client.init({
                 apiKey: apiKey,
                 clientId: clientId,
@@ -25,7 +27,8 @@ function App() {
             });
 
             const authInstance = window.gapi.auth2.getAuthInstance();
-            setIsAuthorized(authInstance.isSignedIn.get());
+            if (authInstance)
+                setIsAuthorized(authInstance.isSignedIn.get());
         });
     }
 
