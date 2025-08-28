@@ -46,9 +46,9 @@ function App(props) {
                         }}
                     />
                 </div>
-            ) : <div className='mb-4'>
-                {{NO_CLIENT_ID_MESSAGE}}
-                <button onClick={loadHardcodedFiles}>Load Hardcoded Data</button>
+            ) : <div >
+                <div className='mb-4'>{NO_CLIENT_ID_MESSAGE}</div>
+                <button className='mb-4' onClick={loadHardcodedFiles}>Load Hardcoded Data</button>
             </div>
             }
 
