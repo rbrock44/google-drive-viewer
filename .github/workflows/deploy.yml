@@ -26,7 +26,7 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
       - name: Configure env variables
-        run: printf "VITE_GOOGLE_CLIENT_ID=%s\nVITE_GOOGLE_API_KEY=%s\n" "${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}" "${{ secrets.REACT_APP_GOOGLE_API_KEY }}" > .env.production
+        run: printf "VITE_GOOGLE_CLIENT_ID=%s\nVITE_GOOGLE_API_KEY=%s\n" "${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}" "${{ secrets.REACT_APP_GOOGLE_API_KEY }}" > ~/.env.production
 
       - name: Build Project
         run: npm run deploy
