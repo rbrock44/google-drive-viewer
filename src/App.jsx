@@ -11,10 +11,11 @@ function App() {
     }, []);
 
     async function initializeGapi() {
+        console.log('clientId: ' )
         await window.gapi.load('client', async () => {
             await window.gapi.client.init({
-                apiKey: 'YOUR_API_KEY',
-                clientId: 'YOUR_CLIENT_ID',
+                apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+                clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
                 discoveryDocs: [DISCOVERY_DOC],
                 scope: SCOPES
             });
