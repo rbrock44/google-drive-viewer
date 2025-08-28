@@ -2,8 +2,8 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import {DISCOVERY_DOC, SCOPES} from './constants.tsx'
 
-const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const apiKey = process.env.GOOGLE_API_KEY;
+const clientId = process.env.GOOGLE_CLIENT_ID;
 
 
 function App() {
@@ -15,9 +15,7 @@ function App() {
     }, []);
 
     async function initializeGapi() {
-        const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-        const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-        console.log('clientId: ', clientId )
+        console.log('clientId: ', clientId, apiKey )
         await window.gapi.load('client', async () => {
             await window.gapi.client.init({
                 apiKey: apiKey,
