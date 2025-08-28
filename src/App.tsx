@@ -2,13 +2,14 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
 import {loadGoogleDriveFiles} from './utils/utils.js';
-import {NO_CLIENT_ID_MESSAGE} from "./constants";
-import filesData from './assets/harcoded-files.json';
+import {FileItem, NO_CLIENT_ID_MESSAGE} from "./constants";
+// @ts-ignore
+import filesData from './assets/hardcoded-files.json';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
     const [folderId, setFolderId] = useState<string>("root"); // 'root' is My Drive
-    const [files, setFiles] = useState<any[]>([]);
+    const [files, setFiles] = useState<FileItem[]>([]);
     const [tokinResponse, setTokinResponse] = useState(null);
 
     useEffect(() => {
