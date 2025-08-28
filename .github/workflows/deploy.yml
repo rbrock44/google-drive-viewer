@@ -27,12 +27,12 @@ jobs:
 
       - name: Configure env variables
         run: |
-          echo "VITE_GOOGLE_API_KEY=${{ secrets.REACT_APP_GOOGLE_API_KEY }}" > ~/.env.production
-          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}" >> ~/.env.production
-          echo "VITE_GOOGLE_CLIENT_SECRET=${{ secrets.REACT_APP_GOOGLE_CLIENT_SECRET }}" >> ~/.env.production
+          echo "VITE_GOOGLE_API_KEY=${{ secrets.REACT_APP_GOOGLE_API_KEY }}" > .env.production
+          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}" >> .env.production
+          echo "VITE_GOOGLE_CLIENT_SECRET=${{ secrets.REACT_APP_GOOGLE_CLIENT_SECRET }}" >> .env.production
 
       - name: Build Project
-        run: npm run deploy
+        run: npm run build
 
       - name: Add CNAME
         run: |
