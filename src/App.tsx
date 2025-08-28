@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
-import { loadGoogleDriveFiles } from './utils/utils.js';
-// import filesData from './assets/harcoded-files.json';
+import {loadGoogleDriveFiles} from './utils/utils.js';
+import {NO_CLIENT_ID_MESSAGE} from "./constants";
+import filesData from './assets/harcoded-files.json';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
@@ -22,21 +23,33 @@ function App(props) {
         }
     };
 
+    const loadHardcodedFiles = () => {
+        setFiles(filesData);
+    };
+
     const signIn = (response) => {
         setIsSignedIn(true);
         setTokinResponse(response);
     }
 
     return (
-        <div style={{ padding: "20px" }}>
-            <div className='mb-4'>
-                <GoogleAuth
-                    clientId={props.clientId}
-                    loginSuccess={signIn}
-                    isSignedIn={isSignedIn}
-                    signOut={() => { setIsSignedIn(false); }}
-                />
+        <div style={{padding: "20px"}}>
+            {props.clientId ? (
+                <div className='mb-4'>
+                    <GoogleAuth
+                        clientId={props.clientId}
+                        loginSuccess={signIn}
+                        isSignedIn={isSignedIn}
+                        signOut={() => {
+                            setIsSignedIn(false);
+                        }}
+                    />
+                </div>
+            ) : <div className='mb-4'>
+                {{NO_CLIENT_ID_MESSAGE}}
+                <button onClick={loadHardcodedFiles}>Load Hardcoded Data</button>
             </div>
+            }
 
             {isSignedIn && (
                 <div className='mb-4'>
@@ -45,7 +58,7 @@ function App(props) {
                         placeholder="Folder ID (default: My Drive)"
                         value={folderId}
                         onChange={(e) => setFolderId(e.target.value)}
-                        className='mr-2 bg-black-200' 
+                        className='mr-2 bg-black-200'
                     />
                     <button onClick={loadFiles}>Load Files</button>
                 </div>

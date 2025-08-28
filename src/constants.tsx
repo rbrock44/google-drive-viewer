@@ -1,5 +1,6 @@
-export const DISCOVERY_DOC: string = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
-export const SCOPES: string = 'https://www.googleapis.com/auth/drive.readonly';
+export const SCOPES: string = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+
+export const NO_CLIENT_ID_MESSAGE: string = 'No clientId';
 
 export interface FileItem {
     id: string;

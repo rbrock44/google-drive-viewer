@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import {SCOPES} from "../../constants";
 
 const loadScript = (src) =>
     new Promise((resolve, reject) => {
@@ -28,16 +29,17 @@ const GoogleAuth = (props) => {
         loadScript(src)
             .then(() => {
                 /*global google*/
+                if (props.clientId) {
+                    const tokenClient = google.accounts.oauth2.initTokenClient({
+                        client_id: props.clientId,
+                        scope: SCOPES,
+                        callback: (tokenResponse) => {
+                            props.loginSuccess(tokenResponse)
+                        },
+                    });
 
-                const tokenClient = google.accounts.oauth2.initTokenClient({
-                    client_id: props.clientId,
-                    scope: "https://www.googleapis.com/auth/drive.metadata.readonly",
-                    callback: (tokenResponse) => {
-                        props.loginSuccess(tokenResponse)
-                    },
-                });
-        
-                tokenClient.requestAccessToken();
+                    tokenClient.requestAccessToken();
+                }
             })
             .catch(console.error)
 
