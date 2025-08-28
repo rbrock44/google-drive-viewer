@@ -26,12 +26,10 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
       - name: Configure env variables
-        run: |
-          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}" >> .env.production
-          echo "VITE_GOOGLE_API_KEY=${{ secrets.REACT_APP_GOOGLE_API_KEY }}" >> .env.production
+        run: echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}\nVITE_GOOGLE_API_KEY=${{ secrets.REACT_APP_GOOGLE_API_KEY }}" > .env.production
 
       - name: Build Project
-        run: npm run build
+        run: npm run deploy
 
       - name: Add CNAME
         run: |
