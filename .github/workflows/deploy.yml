@@ -27,6 +27,9 @@ jobs:
 
       - name: Build Project
         run: npm run deploy
+        env:
+          REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY }}
+          CI: false
 
       - name: Add CNAME
         run: |
