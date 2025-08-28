@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import './App.css'
-import {DISCOVERY_DOC, SCOPES} from 'constants/constants.js'
+import {DISCOVERY_DOC, SCOPES} from './constants.tsx'
 
 function App() {
     const [isAuthorized, setIsAuthorized] = useState(false);
