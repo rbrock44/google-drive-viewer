@@ -2,6 +2,9 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import {DISCOVERY_DOC, SCOPES} from './constants.tsx'
 
+const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
 function App() {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [files, setFiles] = useState([]);
@@ -11,11 +14,11 @@ function App() {
     }, []);
 
     async function initializeGapi() {
-        console.log('clientId: ' )
+        console.log('clientId: ', clientId )
         await window.gapi.load('client', async () => {
             await window.gapi.client.init({
-                apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-                clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+                apiKey: apiKey,
+                clientId: clientId,
                 discoveryDocs: [DISCOVERY_DOC],
                 scope: SCOPES
             });
