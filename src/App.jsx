@@ -1,34 +1,78 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useEffect, useState} from 'react'
 import './App.css'
+import {DISCOVERY_DOC, SCOPES} from 'constants/constants.js'
 
 function App() {
-    const [count, setCount] = useState(0)
+    const [isAuthorized, setIsAuthorized] = useState(false);
+    const [files, setFiles] = useState([]);
+
+    useEffect(() => {
+        initializeGapi();
+    }, []);
+
+    async function initializeGapi() {
+        await window.gapi.load('client', async () => {
+            await window.gapi.client.init({
+                apiKey: 'YOUR_API_KEY',
+                clientId: 'YOUR_CLIENT_ID',
+                discoveryDocs: [DISCOVERY_DOC],
+                scope: SCOPES
+            });
+
+            const authInstance = window.gapi.auth2.getAuthInstance();
+            setIsAuthorized(authInstance.isSignedIn.get());
+        });
+    }
+
+    async function authorize() {
+        const authInstance = window.gapi.auth2.getAuthInstance();
+        await authInstance.signIn();
+        setIsAuthorized(true);
+    }
+
+    async function listFiles() {
+        try {
+            const response = await window.gapi.client.drive.files.list({
+                fields: 'nextPageToken, files(id, name, mimeType, modifiedTime)'
+            });
+
+            setFiles(response.result.files || []);
+        } catch (error) {
+            console.error('Error fetching files:', error);
+        }
+    }
 
     return (
         <>
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo"/>
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo"/>
-                </a>
+            (
+            <div className="p-6">
+                {!isAuthorized ? (
+                    <button
+                        onClick={authorize}
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                        Authorize Google Drive Access
+                    </button>
+                ) : (
+                    <div>
+                        <button
+                            onClick={listFiles}
+                            className="bg-green-500 text-white px-4 py-2 rounded mb-4"
+                        >
+                            Load Drive Files
+                        </button>
+
+                        <div className="grid gap-2">
+                            {files.map(file => (
+                                <div key={file.id} className="p-3 border rounded">
+                                    <h3 className="font-semibold">{file.name}</h3>
+                                    <p className="text-sm text-gray-600">{file.mimeType}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-            <h1 className="text-3xl font-bold underline"> Hello world! </h1>
         </>
     )
 }
