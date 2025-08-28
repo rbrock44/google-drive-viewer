@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
 import { loadGoogleDriveFiles } from './utils/utils.js';
+// import filesData from './assets/harcoded-files.json';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
