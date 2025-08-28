@@ -15,6 +15,8 @@ function App() {
     }, []);
 
     async function initializeGapi() {
+        const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+        const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
         console.log('clientId: ', clientId )
         await window.gapi.load('client', async () => {
             await window.gapi.client.init({
