@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
 import {loadGoogleDriveFiles} from './utils/utils.js';
-import {FileItem, NO_CLIENT_ID_MESSAGE} from "./constants";
+import {FileItem, NO_CLIENT_ID_MESSAGE, ROOT} from "./constants";
 // @ts-ignore
 import filesData from './assets/hardcoded-files.json';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
-    const [folderId, setFolderId] = useState<string>("root"); // 'root' is My Drive
+    const [folderId, setFolderId] = useState<string>(ROOT); // 'root' is My Drive
     const [files, setFiles] = useState<FileItem[]>([]);
     const [tokinResponse, setTokinResponse] = useState(null);
 
@@ -33,41 +33,45 @@ function App(props) {
         setTokinResponse(response);
     }
 
+    const listItemClick = async (file: FileItem) => {
+        if (tokinResponse) {
+            file.children = await loadGoogleDriveFiles(tokinResponse['access_token'], folderId);
+        }
+    };
+
     return (
         <div style={{padding: "20px"}}>
             {(props.clientId != undefined && props.clientId != '') ? (
-                <div className='mb-4'>
-                    <GoogleAuth
-                        clientId={props.clientId}
-                        loginSuccess={signIn}
-                        isSignedIn={isSignedIn}
-                        signOut={() => {
-                            setIsSignedIn(false);
-                        }}
-                    />
+                    <div className='mb-4'>
+                        <GoogleAuth
+                            clientId={props.clientId}
+                            loginSuccess={signIn}
+                            isSignedIn={isSignedIn}
+                            signOut={() => {
+                                setIsSignedIn(false);
+                            }}
+                        />
+                    </div>
+                ) :
+                <div>
+                    <div className='mb-4'>{NO_CLIENT_ID_MESSAGE}</div>
+                    <button className='mb-4' onClick={loadHardcodedFiles}>Load Hardcoded Data</button>
                 </div>
-            ) : <div >
-                <div className='mb-4'>{NO_CLIENT_ID_MESSAGE}</div>
-                <button className='mb-4' onClick={loadHardcodedFiles}>Load Hardcoded Data</button>
-            </div>
             }
 
             {isSignedIn && (
                 <div className='mb-4'>
-                    <input
-                        type="text"
-                        placeholder="Folder ID (default: My Drive)"
-                        value={folderId}
-                        onChange={(e) => setFolderId(e.target.value)}
-                        className='mr-2 bg-black-200'
-                    />
-                    <button onClick={loadFiles}>Load Files</button>
+                    <button onClick={loadFiles}>Load Root Files</button>
                 </div>
             )}
 
             <ul>
                 {files.map((file) => (
-                    <li key={file.id}>
+                    <li
+                        key={file.id}
+                        onClick={() => listItemClick(file)}
+                        className="cursor-pointer hover:bg-gray-200 p-2 rounded"
+                    >
                         {file.name} {file.mimeType === "application/vnd.google-apps.folder" ? "(Folder)" : ""}
                     </li>
                 ))}
