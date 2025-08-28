@@ -5,6 +5,7 @@ import {DISCOVERY_DOC, SCOPES} from './constants.tsx'
 const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
+
 function App() {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [files, setFiles] = useState([]);
