@@ -35,7 +35,7 @@ function App(props) {
 
     return (
         <div style={{padding: "20px"}}>
-            {props.clientId ? (
+            {(props.clientId != undefined && props.clientId != '') ? (
                 <div className='mb-4'>
                     <GoogleAuth
                         clientId={props.clientId}
