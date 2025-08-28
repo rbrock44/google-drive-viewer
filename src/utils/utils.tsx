@@ -49,6 +49,27 @@ export async function childSearch(
 }
 
 export const isExpandandleFileType = (file: FileItem) => {
-    return file.mimeType === "application/vnd.google-apps.folder"
-        || file.mimeType === "application/zip";
+    return file.mimeType === "application/vnd.google-apps.folder";
+        // || file.mimeType === "application/x-zip-compressed";
 }
+
+export function filterFileItems(items: FileItem[], criteria: string): FileItem[] {
+    const lowerCriteria = criteria.toLowerCase();
+  
+    function recursiveFilter(item: FileItem): FileItem | null {
+      const nameMatches = item.name.toLowerCase().includes(lowerCriteria);
+  
+      const filteredChildren = item.children
+        ?.map(recursiveFilter)
+        .filter((c): c is FileItem => c !== null);
+  
+      if (nameMatches || (filteredChildren && filteredChildren.length > 0)) {
+        return { ...item, children: filteredChildren };
+      }
+      return null;
+    }
+  
+    return items
+      .map(recursiveFilter)
+      .filter((i): i is FileItem => i !== null);
+  }

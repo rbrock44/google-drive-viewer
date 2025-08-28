@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
-import { loadGoogleDriveFiles, isExpandandleFileType, childSearch } from './utils/utils.js';
+import { loadGoogleDriveFiles, isExpandandleFileType, childSearch, filterFileItems } from './utils/utils.js';
 import { FileItem, NO_CLIENT_ID_MESSAGE, ROOT } from "./constants";
 // @ts-ignore
 import filesData from './assets/hardcoded-files.json';
 import Item from './components/item/item.js';
+import Search from './components/search/search.js';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
     const [files, setFiles] = useState<FileItem[]>([]);
+    const [allFiles, setAllFiles] = useState<FileItem[]>([]);
     const [tokinResponse, setTokinResponse] = useState(null);
 
     useEffect(() => {
@@ -22,19 +24,29 @@ function App(props) {
             const files = await loadGoogleDriveFiles(accessToken, ROOT)
             const filesWithChildren = await childSearch(accessToken, files);
 
-            console.log(JSON.stringify(filesWithChildren, null, 2));
+            // console.log(JSON.stringify(filesWithChildren, null, 2));
             setFiles(filesWithChildren);
+            setAllFiles(filesWithChildren);
         }
     };
 
     const loadHardcodedFiles = () => {
         setFiles(filesData);
+        setAllFiles(filesData);
     };
 
     const signIn = (response) => {
         setIsSignedIn(true);
         setTokinResponse(response);
     }
+
+    const performSearch = (criteria => {
+        if (criteria) {
+            setFiles(filterFileItems(allFiles, criteria))
+        } else {
+            setFiles(allFiles);
+        }
+    });
 
     return (
         <div style={{ padding: "20px" }}>
@@ -59,6 +71,12 @@ function App(props) {
             {isSignedIn && (
                 <div className='mb-4'>
                     <button onClick={loadRootFiles}>Load Root Files</button>
+                </div>
+            )}
+
+            {files.length > 0 && (
+                <div className='mb-4'>
+                    <Search onSearch={performSearch}/>
                 </div>
             )}
 
