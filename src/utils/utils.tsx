@@ -53,11 +53,11 @@ export const isExpandandleFileType = (file: FileItem) => {
         // || file.mimeType === "application/x-zip-compressed";
 }
 
-export function filterFileItems(items: FileItem[], criteria: string): FileItem[] {
-    const lowerCriteria = criteria.toLowerCase();
+export function filterFileItems(items: FileItem[], criteria: string, isExactMatch: boolean = false): FileItem[] {
+    const lowerCriteria: string = criteria.toLowerCase();
   
     function recursiveFilter(item: FileItem): FileItem | null {
-      const nameMatches = item.name.toLowerCase().includes(lowerCriteria);
+      const nameMatches: boolean = isExactMatch ? (item.name.toLowerCase() === lowerCriteria) : (item.name.toLowerCase().includes(lowerCriteria));
   
       const filteredChildren = item.children
         ?.map(recursiveFilter)

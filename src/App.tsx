@@ -10,6 +10,7 @@ import Search from './components/search/search.js';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+    const [isExactMatch, setIsExactMatch] = useState<boolean>(true);
     const [files, setFiles] = useState<FileItem[]>([]);
     const [allFiles, setAllFiles] = useState<FileItem[]>([]);
     const [tokinResponse, setTokinResponse] = useState(null);
@@ -42,7 +43,7 @@ function App(props) {
 
     const performSearch = (criteria => {
         if (criteria) {
-            setFiles(filterFileItems(allFiles, criteria))
+            setFiles(filterFileItems(allFiles, criteria, isExactMatch))
         } else {
             setFiles(allFiles);
         }
@@ -78,7 +79,7 @@ function App(props) {
 
             {files.length > 0 && (
                 <div className='mb-4'>
-                    <Search onSearch={performSearch}/>
+                    <Search onSearch={performSearch} isExactMatch={isExactMatch} handleExactMatch={(value: boolean) => setIsExactMatch(value)}/>
                 </div>
             )}
 
