@@ -85,7 +85,7 @@ Screenshots: <br/>
 
 ## 🚀 Getting Started (Local Setup)
 
-* Install [node](https://nodejs.org/en) - v19 is needed (v22 also works)
+* Install [node](https://nodejs.org/en) - v22 is needed
 * Clone [repo](https://github.com/rbrock44/google-drive-status)
 
 ---
