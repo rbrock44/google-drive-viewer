@@ -50,6 +50,8 @@ Things I wanted to do:
 - loading icon/state - Recursively searching the google drive can be intense and I should have a loading state in the application
 - styling - More time should be spent styling this, but since this was an MVP I've deemed it good enough
 - Prop types/interfaces - I slung props around without type safety and should add that
+- Linting - wiring up a linter would be a great decision
+- Handle empty search results better
 ---
 
 ## 🚦 How to Use
@@ -58,6 +60,7 @@ Things I wanted to do:
 - `Load Root` Button - After logging in a user can lod the root of the google drive
 - `Load Harcoded Files` Button - when no clientId is provided, this button will load the hardcoded files into the explorer <br/>
 - `Search` Input/Button - Type into the search input box to filter or press the button after <br/>
+- `Exact Match` - this checkbox toggles if it's an exact match or not
 - `+` Button - used to expand contents of that parent item (think file contents of a folder)
 
 Screenshots: <br/>

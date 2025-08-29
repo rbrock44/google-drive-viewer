@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
-import { loadGoogleDriveFiles, isExpandandleFileType, childSearch, filterFileItems } from './utils/utils.js';
-import { FileItem, NO_CLIENT_ID_MESSAGE, ROOT } from "./constants";
+import {childSearch, filterFileItems, loadGoogleDriveFiles} from './utils/utils.js';
+import {FileItem, NO_CLIENT_ID_MESSAGE, ROOT} from "./constants";
 // @ts-ignore
 import filesData from './assets/hardcoded-files.json';
 import Item from './components/item/item.js';
@@ -10,7 +10,7 @@ import Search from './components/search/search.js';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
-    const [isExactMatch, setIsExactMatch] = useState<boolean>(true);
+    const [isExactMatch, setIsExactMatch] = useState<boolean>(false);
     const [files, setFiles] = useState<FileItem[]>([]);
     const [allFiles, setAllFiles] = useState<FileItem[]>([]);
     const [tokinResponse, setTokinResponse] = useState(null);
