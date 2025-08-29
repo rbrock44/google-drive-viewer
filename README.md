@@ -1,7 +1,7 @@
 # Google Drive Viewer
 (React + TypeScript + Vite) <br/> <br/>
 
-> This project was is a file explorer for a person's google drive acount<br/>
+> This project is a file explorer for a person's google drive acount<br/>
 > [Live - Google Drive Viewer Website](https://google-drive-viewer.ryan-brock.com/)
 
 Screenshots: <br/>
