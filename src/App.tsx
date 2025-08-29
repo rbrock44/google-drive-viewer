@@ -79,7 +79,7 @@ function App(props) {
 
             {files.length > 0 && (
                 <div className='mb-4'>
-                    <Search onSearch={performSearch} isExactMatch={isExactMatch} handleExactMatch={(value: boolean) => setIsExactMatch(value)}/>
+                    <Search onSearch={performSearch} exactMatch={isExactMatch} handleExactMatch={(value: boolean) => setIsExactMatch(value)}/>
                 </div>
             )}
 
