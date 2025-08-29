@@ -16,7 +16,7 @@ const Item = (props) => {
 
     return (
         <div key={props.file.id} className="mb-1">
-            <div className="hover:bg-gray-200 p-2 rounded flex justify-between items-center">
+            <div className="p-1 rounded flex justify-between items-center">
                 <span>
                     {props.file.name}{" "}
                     {props.file.mimeType === "application/vnd.google-apps.folder" ? "(Folder)" : ""}
@@ -24,7 +24,7 @@ const Item = (props) => {
 
                 {isExpandandleFileType(props.file) && (
                     <button
-                        className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-600 cursor-pointer"
+                        className="hover:bg-gray-200 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-600 cursor-pointer"
                         onClick={() => listItemClick()}
                     >
                         {isExpanded ? '-' : '+'}
@@ -33,7 +33,7 @@ const Item = (props) => {
             </div>
 
             {children && isExpanded && children.map((child) => (
-                <div key={child.id} className="pl-6">
+                <div key={child.id} className="pl-4">
                     <Item file={child} tokinResponse={props.tokinResponse} />
                 </div>
             ))}

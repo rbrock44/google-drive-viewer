@@ -58,6 +58,8 @@ function App(props) {
                         isSignedIn={isSignedIn}
                         signOut={() => {
                             setIsSignedIn(false);
+                            setAllFiles([]);
+                            setFiles([]);
                         }}
                     />
                 </div>
