@@ -51,6 +51,7 @@ Things I wanted to do:
 - styling - More time should be spent styling this, but since this was an MVP I've deemed it good enough
 - Prop types/interfaces - I slung props around without type safety and should add that
 - Linting - wiring up a linter would be a great decision
+- Better navigation - right now it just expands and collapses but normal file viewers once you click an child directory it doesnt search upwards do that would make it more performant and make me swap how it loads children
 - Handle empty search results better
 ---
 
