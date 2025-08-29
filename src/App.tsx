@@ -1,31 +1,38 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import GoogleAuth from './components/google-auth/google-auth.js';
-import {loadGoogleDriveFiles} from './utils/utils.js';
-import {FileItem, NO_CLIENT_ID_MESSAGE, ROOT} from "./constants";
+import { loadGoogleDriveFiles, isExpandandleFileType, childSearch, filterFileItems } from './utils/utils.js';
+import { FileItem, NO_CLIENT_ID_MESSAGE, ROOT } from "./constants";
 // @ts-ignore
 import filesData from './assets/hardcoded-files.json';
+import Item from './components/item/item.js';
+import Search from './components/search/search.js';
 
 function App(props) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
-    const [folderId, setFolderId] = useState<string>(ROOT); // 'root' is My Drive
     const [files, setFiles] = useState<FileItem[]>([]);
+    const [allFiles, setAllFiles] = useState<FileItem[]>([]);
     const [tokinResponse, setTokinResponse] = useState(null);
 
     useEffect(() => {
         console.log(props, props.clientId, props.apiKey)
     }, []);
 
-    const loadFiles = async () => {
+    const loadRootFiles = async () => {
         if (tokinResponse) {
-            const files = await loadGoogleDriveFiles(tokinResponse['access_token'], folderId)
-            console.log(files);
-            setFiles(files);
+            const accessToken = tokinResponse['access_token'];
+            const files = await loadGoogleDriveFiles(accessToken, ROOT)
+            const filesWithChildren = await childSearch(accessToken, files);
+
+            // console.log(JSON.stringify(filesWithChildren, null, 2));
+            setFiles(filesWithChildren);
+            setAllFiles(filesWithChildren);
         }
     };
 
     const loadHardcodedFiles = () => {
         setFiles(filesData);
+        setAllFiles(filesData);
     };
 
     const signIn = (response) => {
@@ -33,26 +40,30 @@ function App(props) {
         setTokinResponse(response);
     }
 
-    const listItemClick = async (file: FileItem) => {
-        if (tokinResponse) {
-            file.children = await loadGoogleDriveFiles(tokinResponse['access_token'], folderId);
+    const performSearch = (criteria => {
+        if (criteria) {
+            setFiles(filterFileItems(allFiles, criteria))
+        } else {
+            setFiles(allFiles);
         }
-    };
+    });
 
     return (
-        <div style={{padding: "20px"}}>
+        <div style={{ padding: "20px" }}>
             {(props.clientId != undefined && props.clientId != '') ? (
-                    <div className='mb-4'>
-                        <GoogleAuth
-                            clientId={props.clientId}
-                            loginSuccess={signIn}
-                            isSignedIn={isSignedIn}
-                            signOut={() => {
-                                setIsSignedIn(false);
-                            }}
-                        />
-                    </div>
-                ) :
+                <div className='mb-4'>
+                    <GoogleAuth
+                        clientId={props.clientId}
+                        loginSuccess={signIn}
+                        isSignedIn={isSignedIn}
+                        signOut={() => {
+                            setIsSignedIn(false);
+                            setAllFiles([]);
+                            setFiles([]);
+                        }}
+                    />
+                </div>
+            ) :
                 <div>
                     <div className='mb-4'>{NO_CLIENT_ID_MESSAGE}</div>
                     <button className='mb-4' onClick={loadHardcodedFiles}>Load Hardcoded Data</button>
@@ -61,19 +72,23 @@ function App(props) {
 
             {isSignedIn && (
                 <div className='mb-4'>
-                    <button onClick={loadFiles}>Load Root Files</button>
+                    <button onClick={loadRootFiles}>Load Root Files</button>
+                </div>
+            )}
+
+            {files.length > 0 && (
+                <div className='mb-4'>
+                    <Search onSearch={performSearch}/>
                 </div>
             )}
 
             <ul>
                 {files.map((file) => (
-                    <li
+                    <Item
                         key={file.id}
-                        onClick={() => listItemClick(file)}
-                        className="cursor-pointer hover:bg-gray-200 p-2 rounded"
-                    >
-                        {file.name} {file.mimeType === "application/vnd.google-apps.folder" ? "(Folder)" : ""}
-                    </li>
+                        file={file}
+                        tokinResponse={tokinResponse}
+                    />
                 ))}
             </ul>
         </div>
